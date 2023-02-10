@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <title>Block Buster - Level 1</title>
 </head>
-  <body style="background-color: #E9B2A5">
+  <body style="background-color: #ACD1E9">
 	<div  id="heading" >
          <h1 class="stroke-text">BLOCK BUSTER</h1> 
     </div>
@@ -33,11 +33,11 @@ echo "<table class='container'>
                   </tr>
 				   <tr>
                       <td style='background-color:#222222'><h2>&nbsp&nbsp App Version</h2></td>
-                      <td style='background-color:#222222'><h3>&nbsp&nbsp " . '7.5.0' . "</h3></td>
+                      <td style='background-color:#222222'><h3>&nbsp&nbsp " . '7.6.0' . "</h3></td>
                   </tr>
 				  <tr>
                       <td style='background-color:#3C3C3C'><h2>&nbsp&nbsp What's new</h2></td>
-                      <td style='background-color:#3C3C3C'><h3>&nbsp&nbsp " . ' Added an button to Start the game manually ' . "</h3></td>
+                      <td style='background-color:#3C3C3C'><h3>&nbsp&nbsp " . ' Added a new Level 2 ' . "</h3></td>
                   </tr>";
 echo "</table>";
  
@@ -206,8 +206,8 @@ else {
                         if(score == brickRowCount*brickColumnCount) {
                         alert("Level 1 Completed!");
 	
-                            document.location.reload();
-						
+                            //document.location.reload();
+							level2();
                         } 
                     }
                 }
@@ -349,11 +349,14 @@ else {
 		drawLevel();
 		drawScore_text();
 		drawLives_text();
-		
 		function play() {   
 			draw();
 		}
 
+		
+		function level2() {
+		window.location = "level2.php?s="+score*100+"&l="+lives
+		}
 		
 		
 		function pressStart() {
