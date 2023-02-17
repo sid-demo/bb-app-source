@@ -15,8 +15,6 @@ service:
   port: 80
   targetPort: 80
 
-namespace:
-  name: demo-app
   
 labels:
   app:
