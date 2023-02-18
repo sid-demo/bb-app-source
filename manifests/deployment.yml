@@ -3,10 +3,10 @@ kind: Deployment
 metadata:
   labels:
     app: block-buster
-    version: 7.1.0
+    version: 7.8.x
     env: dev
-  name: block-buster-deployment
-  namespace: 1-demo
+  name: block-buster-deployment-7.8.0
+  namespace: 8-demo
 spec:
   replicas: 1
   selector:
@@ -20,11 +20,11 @@ spec:
         api: downward
         usage: global
         env: dev
-        version: 7.1.0
+        version: 7.8.x
     spec:
       containers:
         - name: app
-          image:  siddharth67/block-buster-dev:7.1.0
+          image:  siddharth67/block-buster-dev:7.8.0
           imagePullPolicy: Always
           resources:
             requests:

@@ -3,8 +3,8 @@ kind: Service
 metadata:
   labels:
     app: block-buster
-  name: block-buster-service
-  namespace: 1-demo
+  name: block-buster-service-7.8.0
+  namespace: 8-demo
 spec:
   ports:
   - port: 80
@@ -12,6 +12,6 @@ spec:
     targetPort: 80
   selector:
     app: block-buster
-    version: 7.1.0
+    version: 7.8.x
     env: dev
   type: NodePort

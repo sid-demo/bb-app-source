@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <title>Block Buster - Level 1</title>
 </head>
-<body style="background-color: #F1F2C7">
+  <body style="background-color: #80F1BE">
 	<div  id="heading" >
          <h1 class="stroke-text">BLOCK BUSTER</h1> 
     </div>
@@ -33,15 +33,34 @@ echo "<table class='container'>
                   </tr>
 				   <tr>
                       <td style='background-color:#222222'><h2>&nbsp&nbsp App Version</h2></td>
-                      <td style='background-color:#222222'><h3>&nbsp&nbsp " . '7.1.0' . "</h3></td>
+                      <td style='background-color:#222222'><h3>&nbsp&nbsp " . '7.8.0' . "</h3></td>
                   </tr>
 				  <tr>
                       <td style='background-color:#3C3C3C'><h2>&nbsp&nbsp What's new</h2></td>
-                      <td style='background-color:#3C3C3C'><h3>&nbsp&nbsp " . 'Initialization' . "</h3></td>
+                      <td style='background-color:#3C3C3C'><h3>&nbsp&nbsp " . 'BugFix - HighScore is Persisted to Database ' . "</h3></td>
                   </tr>";
 echo "</table>";
+
+// $servername = "localhost";
+$servername = "mysql.database.svc.cluster.local";
+$username = "root";
+$password = "mysql-password-0123456789";
+$dbname = "bricks";
+
+$conn = new mysqli($servername, $username, $password, $dbname); // Create connection
+if ($conn->connect_error) {     // Check connection
+    die("Connection failed: " . $conn->connect_error);
+} 
+
+$sql = 'SELECT max(score) FROM highscore';
+
+$result = $conn->query($sql);
+$high_score_result = $result->fetch_array()[0] ?? '';
+
+$conn->close();     
 ?>
-<canvas id="myCanvas" width="800" height="600"  style="background-color: #000000"></canvas>
+<canvas id="myCanvas" width="800" height="600"  style="background: url('images/level1.png')"></canvas>
+    <button id="play-button" onclick="play()">START GAME</button>
 <style>
  *{
      box-sizing:border-box;
@@ -137,14 +156,15 @@ echo "</table>";
     var rightPressed = false;
     var leftPressed = false;
     var brickRowCount = 8;
-    var brickColumnCount = 3;
+    var brickColumnCount = 8;
     var brickWidth = 80;
     var brickHeight = 30;
     var brickPadding = 5;
     var brickOffsetTop = 70;
     var brickOffsetLeft = 65;
     var score = 0;
-    var lives = 1;
+	var highscore = <?php echo $high_score_result; ?>;
+    var lives = 3;
 	
 	var bX=(brickWidth+brickPadding)+brickOffsetLeft;
 
@@ -202,8 +222,9 @@ else {
                         score++;
                         if(score == brickRowCount*brickColumnCount) {
                         alert("Level 1 Completed!");
-						alert("\nGame Over!!! \nGame will be restarted");
-                        document.location.reload();
+							//saveHighScore();
+                            //document.location.reload();
+							level2();
                         } 
                     }
                 }
@@ -216,13 +237,15 @@ else {
     function drawBall() {
         ctx.beginPath();
         ctx.arc(x, y, ballRadius, 0, Math.PI*120);
-        ctx.fillStyle = "#2AD4FF";
+        ctx.fillStyle = "#FFBA00";
 		ctx.strokeStyle = 'black';
+		//ctx.fillStyle ='hsl(' + 360 * Math.random() + ', 20%, 50%)';
         ctx.fill();
         ctx.closePath();
 		ctx.stroke();
     }
 	
+		
 	 function drawPaddle() {
         ctx.beginPath();
         ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
@@ -232,8 +255,9 @@ else {
         ctx.closePath();
 		ctx.stroke();
     }
+	
     function drawBricks() {
-		const colors = ['#00BD8D', '#c24cf6', '#fc6e22', '#fc6e22', '#c24cf6', '#c24cf6','#ffff66', '#ffff66'];
+		const colors = ['#00BD8D', '#00BD8D', '#fc6e22', '#fc6e22', '#c24cf6', '#c24cf6','#ffff66', '#ffff66'];
         for(var c=0; c<brickColumnCount; c++) {
             for(var r=0; r<brickRowCount; r++) {
                 if(bricks[c][r].status == 1) {
@@ -242,7 +266,6 @@ else {
                     bricks[c][r].x = brickX;
                     bricks[c][r].y = brickY;
                     ctx.beginPath();
-
 					ctx.rect(brickX, brickY, brickWidth, brickHeight);
 					ctx.fillStyle = colors[c];
                   ctx.fill();
@@ -251,17 +274,41 @@ else {
             }
         }
     }
-   function drawLevel() {
+    function drawLevel() {
+		ctx.font = "20px Ubuntu Mono";
+        ctx.fillStyle = "#eeeeee";
+        ctx.fillText("Level: 1", 8, 20); 
+    }
+	function drawScore() {
         ctx.font = "20px Ubuntu Mono";
         ctx.fillStyle = "#eeeeee";
-        ctx.fillText("Level: 1", 8, 20);
+        ctx.fillText('Score '+score*100, canvas.width-600, 25);
     }
+	
+	function drawHighScore() {
+        ctx.font = "20px Ubuntu Mono";
+        ctx.fillStyle = "#eeeeee";
+        ctx.fillText('HighScore '+highscore, canvas.width-350, 25);
+    }
+	
     function drawLives() {
         ctx.font = "20px Ubuntu Mono";
         ctx.fillStyle = "#eeeeee";
-        ctx.fillText("Lives: "+lives, canvas.width-100, 20);
+        ctx.fillText("Lives: "+lives, canvas.width-100, 25);
     }
 
+	function drawScore_text() {
+        ctx.font = "20px Ubuntu Mono";
+        ctx.fillStyle = "#eeeeee";
+        ctx.fillText('Score '+score*100, canvas.width-600, 25);
+    }
+	
+	function drawHighScore_text() {
+        ctx.font = "20px Ubuntu Mono";
+        ctx.fillStyle = "#eeeeee";
+        ctx.fillText('HighScore '+highscore, canvas.width-350, 20);
+    }
+	
     function drawLives_text() {
         ctx.font = "20px Ubuntu Mono";
         ctx.fillStyle = "#eeeeee";
@@ -272,8 +319,10 @@ else {
     function draw() {
 	    ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawBricks();
+		drawHighScore();
         drawBall();
         drawPaddle();
+        drawScore();
         drawLives();
 		drawLevel();
         collisionDetection();
@@ -289,11 +338,18 @@ else {
             }
             else {
                 lives--;
+				/* if(lives) {
+				       alert("Missed the Ball? \n Do not worry we got you covered!");
+						//document.location.reload();
+				  } */
                 if(!lives) {
 					alert("Game Over!!! \nRestart the Game?");
+					saveHighScore();
                     document.location.reload();
                 }
                 else {
+					// alert("Missed the Ball? \nDo not worry we got you covered!");
+					// saveHighScore();
                     x = canvas.width/2;
                     y = canvas.height-30;
                     dx = 5;
@@ -316,7 +372,33 @@ else {
     }
 
 
-		draw();
+		pressStart();
+		drawLevel();
+		drawScore_text();
+		drawHighScore_text();
+		drawLives_text();
+		function play() {   
+			draw();
+		}
+	
+		function saveHighScore() {
+		$.post("highscore.php",
+		{
+			highScore: score*100
+		});}
+		
+		function level2() {
+		window.location = "level2.php?s="+score*100+"&l="+lives
+		}
+		
+		
+		function pressStart() {
+    ctx.font = '50px Rubik';
+    ctx.fillStyle = 'white';
+    ctx.fillText('PRESS START', canvas.width / 2 - 150, canvas.height / 2);
+};
+
+
 </script>
 
 
