@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     app: block-buster
-  name: block-buster-service-7.8.0
+  name: block-buster-service
   namespace: 8-demo
 spec:
   ports:
