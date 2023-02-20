@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <title>Block Buster - Level 1</title>
 </head>
-  <body style="background-color: #80F1BE">
+  <body style="background-color: #9DA1B0">
 	<div  id="heading" >
          <h1 class="stroke-text">BLOCK BUSTER</h1> 
     </div>
@@ -33,15 +33,14 @@ echo "<table class='container'>
                   </tr>
 				   <tr>
                       <td style='background-color:#222222'><h2>&nbsp&nbsp App Version</h2></td>
-                      <td style='background-color:#222222'><h3>&nbsp&nbsp " . '7.8.0' . "</h3></td>
+                      <td style='background-color:#222222'><h3>&nbsp&nbsp " . '7.9.0' . "</h3></td>
                   </tr>
 				  <tr>
                       <td style='background-color:#3C3C3C'><h2>&nbsp&nbsp What's new</h2></td>
-                      <td style='background-color:#3C3C3C'><h3>&nbsp&nbsp " . 'BugFix - HighScore is Persisted to Database ' . "</h3></td>
+                      <td style='background-color:#3C3C3C'><h3>&nbsp&nbsp " . 'Added images for paddel, score, lives ' . "</h3></td>
                   </tr>";
 echo "</table>";
 
-// $servername = "localhost";
 $servername = "mysql.database.svc.cluster.local";
 $username = "root";
 $password = "mysql-password-0123456789";
@@ -245,17 +244,24 @@ else {
 		ctx.stroke();
     }
 	
-		
-	 function drawPaddle() {
-        ctx.beginPath();
-        ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
-        ctx.fillStyle = "#d23351";
-		ctx.strokeStyle = 'white';
-        ctx.fill();
-        ctx.closePath();
-		ctx.stroke();
-    }
 	
+	
+	let images = {
+	  paddle: new Image(),
+	  heart: new Image(),
+	  podium: new Image(),
+	  score: new Image() 
+	  }
+
+	images.paddle.src = 'images/paddle.png'; 
+	images.heart.src = 'images/heart.png';
+	images.podium.src = 'images/podium.png';
+	images.score.src = 'images/score.png';
+
+	function drawPaddle() {
+       ctx.drawImage(images.paddle, paddleX, canvas.height-paddleHeight,paddleWidth, paddleHeight);
+
+    }
     function drawBricks() {
 		const colors = ['#00BD8D', '#00BD8D', '#fc6e22', '#fc6e22', '#c24cf6', '#c24cf6','#ffff66', '#ffff66'];
         for(var c=0; c<brickColumnCount; c++) {
@@ -266,8 +272,12 @@ else {
                     bricks[c][r].x = brickX;
                     bricks[c][r].y = brickY;
                     ctx.beginPath();
-					ctx.rect(brickX, brickY, brickWidth, brickHeight);
+					// ctx.drawImage(images.brick, brickX, brickY, brickWidth, brickHeight);
+
+                  ctx.rect(brickX, brickY, brickWidth, brickHeight);
+						//ctx.fillStyle = "#eeeeee";
 					ctx.fillStyle = colors[c];
+						//ctx.fillStyle = "#" + Math.floor(Math.random()*16777215).toString(16);
                   ctx.fill();
                  ctx.closePath();
                 }
@@ -280,27 +290,30 @@ else {
         ctx.fillText("Level: 1", 8, 20); 
     }
 	function drawScore() {
+		ctx.drawImage(images.score, canvas.width-550, 5);
         ctx.font = "20px Ubuntu Mono";
         ctx.fillStyle = "#eeeeee";
-        ctx.fillText('Score '+score*100, canvas.width-600, 25);
+        ctx.fillText(score*100, canvas.width-500, 25);
     }
 	
 	function drawHighScore() {
+		ctx.drawImage(images.podium, canvas.width-300, 5);
         ctx.font = "20px Ubuntu Mono";
         ctx.fillStyle = "#eeeeee";
-        ctx.fillText('HighScore '+highscore, canvas.width-350, 25);
+        ctx.fillText(highscore, canvas.width-250, 25);
     }
 	
     function drawLives() {
+		ctx.drawImage(images.heart, canvas.width-85, 5);
         ctx.font = "20px Ubuntu Mono";
         ctx.fillStyle = "#eeeeee";
-        ctx.fillText("Lives: "+lives, canvas.width-100, 25);
+        ctx.fillText(lives, canvas.width-50, 25);
     }
 
 	function drawScore_text() {
         ctx.font = "20px Ubuntu Mono";
         ctx.fillStyle = "#eeeeee";
-        ctx.fillText('Score '+score*100, canvas.width-600, 25);
+        ctx.fillText('Score '+score*100, canvas.width-600, 20);
     }
 	
 	function drawHighScore_text() {
