@@ -3,10 +3,10 @@ kind: Deployment
 metadata:
   labels:
     app: block-buster
-    version: 7.8.x
+    version: 7.10.0
     env: dev
-  name: block-buster-deployment-7.8.0
-  namespace: 8-demo
+  name: block-buster
+  namespace: 7.10.0
 spec:
   replicas: 1
   selector:
@@ -20,11 +20,11 @@ spec:
         api: downward
         usage: global
         env: dev
-        version: 7.8.x
+        version: 7.10.0
     spec:
       containers:
         - name: app
-          image: docker.io/siddharth67/bb-app-test-demo:7.8.1 # {"$imagepolicy": "flux-system:8-demo-image-policy-bb-app"}
+          image: siddharth67/block-buster-dev:7.10.0
           imagePullPolicy: Always
           resources:
             requests:

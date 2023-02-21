@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <title>Block Buster - Level 2</title>
   </head>
-  <body style="background-color: #80F1BE">
+  <body style="background: url('https://media.tenor.com/TZaIBNauQfAAAAAC/stars-galaxy.gif')">
     <div id="heading">
       <h1 class="stroke-text">BLOCK BUSTER</h1>
     </div> <?php
@@ -33,11 +33,11 @@ echo "
 				</tr>
 				   <tr>
                       <td style='background-color:#222222'><h2>&nbsp&nbsp App Version</h2></td>
-                      <td style='background-color:#222222'><h3>&nbsp&nbsp " . '7.8.0' . "</h3></td>
+                      <td style='background-color:#222222'><h3>&nbsp&nbsp " . '7.10.0' . "</h3></td>
                   </tr>
 				  <tr>
                       <td style='background-color:#3C3C3C'><h2>&nbsp&nbsp What's new</h2></td>
-                      <td style='background-color:#3C3C3C'><h3>&nbsp&nbsp " . 'BugFix - HighScore is Persisted to Database ' . "</h3></td>
+                      <td style='background-color:#3C3C3C'><h3>&nbsp&nbsp " . 'Updated the background - Starry Night ' . "</h3></td>
                   </tr>";
 echo "
 			</table>";
@@ -237,7 +237,19 @@ $conn->close();
             }
         }
     }
-	
+
+    let images = {
+      paddle: new Image(),
+      heart: new Image(),
+      podium: new Image(),
+      score: new Image() 
+      }
+
+    images.paddle.src = 'images/paddle.png'; 
+    images.heart.src = 'images/heart.png';
+    images.podium.src = 'images/podium.png';
+    images.score.src = 'images/score.png';
+
     function drawBall2() {
         ctx2.beginPath();
         ctx2.arc(x, y, ballRadius, 0, Math.PI*120);
@@ -248,16 +260,11 @@ $conn->close();
         ctx2.closePath();
 		ctx2.stroke();
     }
-	 function drawPaddle3() {
-        ctx2.beginPath();
-        ctx2.rect(paddleX2, canvas2.height-paddleHeight2, paddleWidth2, paddleHeight2);
-        ctx2.fillStyle = "#d23351";
-		ctx2.strokeStyle = 'white';
-        ctx2.fill();
-        ctx2.closePath();
-		ctx2.stroke();
-    }
 
+	function drawPaddle3() {
+       ctx2.drawImage(images.paddle, paddleX2, canvas2.height-paddleHeight2,paddleWidth2, paddleHeight2);
+
+    }
 	
     function drawbricks2() {
 		const colors = ['#d23351', '#d23351', '#a9dd0e', '#a9dd0e', '#84d4f1', '#84d4f1','#ffffff', '#e8e4af', '#e8e4af', '#c4d7fa', '#c4d7fa', '#3eeb70', '#3eeb70'];
@@ -287,21 +294,24 @@ $conn->close();
     }
 	
 	function drawScore() {
+		ctx2.drawImage(images.score, canvas2.width-550, 5);
         ctx2.font = "20px Ubuntu Mono";
         ctx2.fillStyle = "#eeeeee";
-        ctx2.fillText("Score: "+score2, canvas2.width-600, 20);
+        ctx2.fillText(score2, canvas2.width-500, 25);
     }
 	
 	function drawHighScore() {
+		ctx2.drawImage(images.podium, canvas2.width-300, 5);
         ctx2.font = "20px Ubuntu Mono";
         ctx2.fillStyle = "#eeeeee";
-        ctx2.fillText("High Score: "+highscore, canvas2.width-350, 25);
+        ctx2.fillText(highscore, canvas2.width-250, 25);
     }
 	
     function drawLives() {
+		ctx2.drawImage(images.heart, canvas2.width-85, 5);
         ctx2.font = "20px Ubuntu Mono";
         ctx2.fillStyle = "#eeeeee";
-        ctx2.fillText("Lives: "+lives, canvas2.width-100, 20);
+        ctx2.fillText(lives, canvas2.width-50, 25);
     }
 	
 	
