@@ -5,7 +5,7 @@ metadata:
     app: block-buster
     version: 7.8.x
     env: dev
-  name: block-buster-deployment-7.8.0
+  name: block-buster-7.8.0
   namespace: 8-demo
 spec:
   replicas: 1
