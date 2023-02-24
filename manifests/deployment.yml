@@ -8,7 +8,7 @@ metadata:
   name: block-buster
   namespace: 2-demo
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: block-buster
@@ -29,10 +29,10 @@ spec:
           resources:
             requests:
               memory: "32Mi"
-              cpu: "125m"
+              cpu: "10m"
             limits:
               memory: "64Mi"
-              cpu: "250m"
+              cpu: "20m"
           env:
             - name: MY_POD_NAME
               valueFrom:
