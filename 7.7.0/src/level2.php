@@ -43,11 +43,10 @@ echo "
 			</table>";
 
 // $servername = "localhost";
-$servername = "mysql";
+$servername = "mysql.database.svc.cluster.local";
 $username = "root";
-$password = "password";
+$password = "mysql-password-0123456789";
 $dbname = "bricks";
-
 
 
 $conn = new mysqli($servername, $username, $password, $dbname); // Create connection
